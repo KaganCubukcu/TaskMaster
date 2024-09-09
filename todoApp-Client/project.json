@@ -1,0 +1,89 @@
+{
+  "name": "todoApp-Client",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "todoApp-Client/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/todoApp-Client",
+        "index": "todoApp-Client/src/index.html",
+        "browser": "todoApp-Client/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "todoApp-Client/tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "todoApp-Client/public"
+          }
+        ],
+        "styles": ["todoApp-Client/src/styles.css"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "todoApp-Client:build:production"
+        },
+        "development": {
+          "buildTarget": "todoApp-Client:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "buildTarget": "todoApp-Client:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "todoApp-Client/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "todoApp-Client:build",
+        "port": 4200,
+        "staticFilePath": "dist/todoApp-Client/browser",
+        "spa": true
+      }
+    }
+  }
+}
