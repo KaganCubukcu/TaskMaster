@@ -13,14 +13,12 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome todoApp-Client'
-    );
+    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome todoApp-Client');
   });
 
   it(`should have as title 'todoApp-Client'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('todoApp-Client');
+    expect(app.title).toEqual('Taskmaster');
   });
 });
