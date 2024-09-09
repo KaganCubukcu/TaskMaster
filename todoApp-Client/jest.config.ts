@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'todoApp-Client',
+  displayName: 'TaskMaster',
   preset: '../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../coverage/todoApp-Client',
