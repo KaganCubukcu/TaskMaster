@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UnauthorizedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UnauthorizedException,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -16,6 +23,13 @@ export class AuthController {
 
   @Post('register')
   async register(@Body() registerDto: { email: string; password: string; name: string }) {
-    return this.authService.register(registerDto);
+    try {
+      return await this.authService.register(registerDto);
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new BadRequestException('Email already exists');
+      }
+      throw new InternalServerErrorException();
+    }
   }
 }

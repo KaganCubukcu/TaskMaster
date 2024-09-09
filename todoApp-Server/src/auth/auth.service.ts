@@ -14,18 +14,15 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async validateUser(email: string, password: string): Promise<Omit<User, 'password'>> {
-    const user = {
-      id: 1,
-      email: 'user@example.com',
-      password: await bcrypt.hash('password', 10),
-    };
+  async validateUser(email: string, password: string): Promise<Omit<User, 'password'> | null> {
+    const user = await this.userModel.findOne({ email }).exec();
     if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, ...result } = user;
+      const { password, ...result } = user.toObject();
       return result;
     }
     return null;
   }
+
   async login(user: Omit<User, 'password'>): Promise<LoginResult> {
     const payload = { email: user.email, sub: user.id };
     return {
