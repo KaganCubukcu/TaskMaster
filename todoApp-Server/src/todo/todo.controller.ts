@@ -11,9 +11,10 @@ export class TodoController {
   @Get()
   async findAll(
     @Query('completed') completed?: boolean,
-    @Query('sort') sort?: string
+    @Query('sort') sort: string = 'dueDate'
   ): Promise<Todo[]> {
-    return this.todoService.findAll(completed, sort);
+    const completedBool = completed ? completed === true : undefined;
+    return this.todoService.findAll(completedBool, sort);
   }
 
   @Get(':id')

@@ -14,7 +14,7 @@ export class TodoService {
     if (completed !== undefined) {
       query = query.where('completed').equals(completed);
     }
-    return query.sort(sort);
+    return query.sort({ [sort]: 1 });
   }
 
   async findOne(id: string): Promise<Todo> {
