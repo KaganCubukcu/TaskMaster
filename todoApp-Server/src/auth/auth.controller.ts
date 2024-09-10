@@ -5,12 +5,15 @@ import {
   UnauthorizedException,
   BadRequestException,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './DTOs/login.dto';
 import { RegisterDto } from './DTOs/register.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
+@UseGuards(JwtAuthGuard)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
