@@ -1,0 +1,16 @@
+<div class="flex justify-center items-center h-screen">
+  <div class="w-[400px] min-h-[500px] bg-white shadow-lg rounded-lg p-6">
+    <h1 class="font-title text-xl mb-6 text-center">Login</h1>
+    <form [formGroup]="loginForm" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm">Email</label>
+        <input type="email" id="email" formControlName="email" class="w-full p-2 border border-gray-300 rounded-md" />
+      </div>
+      <div>
+        <label for="password" class="block text-sm">Password</label>
+        <input type="password" id="password" formControlName="password" class="w-full p-2 border border-gray-300 rounded-md" />
+      </div>
+      <button type="submit" class="w-full bg-[#3498DB] text-white py-2 rounded-md" [disabled]="loginForm.invalid" (click)="onSubmit()">Login</button>
+    </form>
+  </div>
+</div>
