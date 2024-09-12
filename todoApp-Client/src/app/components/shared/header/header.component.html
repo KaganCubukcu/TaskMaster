@@ -1,0 +1,21 @@
+<div class="w-full justify-center items-center bg-white shadow rounded-lg">
+  <nav class="flex items-center justify-between py-4 px-6">
+    <div class="flex items-center space-x-2">
+      <i class="fa-solid fa-droplet"></i>
+      <span class="font-title text-xl">TaskMaster</span>
+    </div>
+    <div class="flex items-center space-x-12">
+      <a href="/" class="text-gray-700 hover:text-black">Home</a>
+      <a href="/about" class="text-gray-700 hover:text-black">About</a>
+      <a href="/features" class="text-gray-700 hover:text-black">Feature</a>
+      <a href="/contact" class="text-gray-700 hover:text-black">Contact</a>
+    </div>
+    <div class="flex items-center space-x-4">
+      @if (isLoggedIn) {
+      <img src="https://tools-api.webcrumbs.org/image-placeholder/40/40/avatar/1" class="w-[40px] h-[40px] rounded-full object-cover" alt="User Avatar" />
+      } @else {
+      <button href="/login" class="w-[120px] h-[40px] bg-[#3498DB] text-white rounded-md">Get Started</button>
+      }
+    </div>
+  </nav>
+</div>
