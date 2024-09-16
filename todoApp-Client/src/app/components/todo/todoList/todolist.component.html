@@ -1,4 +1,4 @@
-<div class="flex justify-center items-center w-full mt-5">
+<div class="flex justify-center items-center w-full mt-5" *ngIf="isLoggedIn">
   <ul class="flex flex-wrap justify-center gap-4 w-full min-h-[200px] p-4">
     <li *ngFor="let todo of todos" class="flex flex-col justify-between items-center p-2 border-b border-gray-300 gap-3">
       <span [class.completed]="todo.completed">{{ todo.title }}</span>

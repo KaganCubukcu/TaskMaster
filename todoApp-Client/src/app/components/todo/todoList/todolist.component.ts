@@ -4,6 +4,8 @@ import {Todo} from '@/app/interfaces/todo/Todo.interface'
 import {TodoService} from '@/app/services/todo/todo.service'
 import {Subject, takeUntil} from 'rxjs'
 import {FormsModule} from '@angular/forms'
+import {AuthService} from '@/app/services/auth/auth.service'
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-todolist',
@@ -16,12 +18,20 @@ export class TodolistComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>()
   todos: Todo[] = []
   selectedTodo: Todo | null = null
-  isModalOpen = false
+  isModalOpen: boolean = false
+  isLoggedIn: boolean = false
 
-  constructor(private todoService: TodoService) {}
+  constructor(private todoService: TodoService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.loadTodos()
+    this.authService.isLoggedIn$.pipe(takeUntil(this.unsubscribe$)).subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn
+      if (!isLoggedIn) {
+        this.router.navigate(['/login'])
+      } else {
+        this.loadTodos()
+      }
+    })
   }
 
   loadTodos(): void {

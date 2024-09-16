@@ -1,7 +1,10 @@
-import {Component} from '@angular/core'
+import {Component, OnDestroy, OnInit} from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {FormsModule} from '@angular/forms'
 import {TodoService} from '@/app/services/todo/todo.service'
+import {AuthService} from '@/app/services/auth/auth.service'
+import {Router} from '@angular/router'
+import {Subject, takeUntil} from 'rxjs'
 
 @Component({
   selector: 'app-todoform',
@@ -10,10 +13,17 @@ import {TodoService} from '@/app/services/todo/todo.service'
   templateUrl: './todoform.component.html',
   styleUrls: ['./todoform.component.css']
 })
-export class TodoFormComponent {
+export class TodoFormComponent implements OnInit, OnDestroy {
+  unsubscribe$ = new Subject<void>()
   newTodoTitle: string = ''
+  isLoggedIn = false
+  constructor(private todoService: TodoService, private authService: AuthService, private router: Router) {}
 
-  constructor(private todoService: TodoService) {}
+  ngOnInit(): void {
+    this.authService.isLoggedIn$.pipe(takeUntil(this.unsubscribe$)).subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn
+    })
+  }
 
   onSubmit() {
     if (this.newTodoTitle.trim()) {
@@ -33,5 +43,10 @@ export class TodoFormComponent {
           }
         })
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
   }
 }
