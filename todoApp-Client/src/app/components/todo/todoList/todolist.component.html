@@ -1,11 +1,33 @@
 <div class="flex justify-center items-center w-full mt-5">
-  <ul>
-    <li *ngFor="let todo of todos" class="flex justify-between items-center p-2 border-b border-gray-300">
+  <ul class="flex flex-wrap justify-center gap-4 w-full min-h-[200px] p-4">
+    <li *ngFor="let todo of todos" class="flex flex-col justify-between items-center p-2 border-b border-gray-300 gap-3">
       <span [class.completed]="todo.completed">{{ todo.title }}</span>
+      <span>{{ todo.description }}</span>
       <span>{{ todo.createdAt | date }}</span>
-      <button (click)="deleteTodo(todo._id!)" class="bg-red-500 text-white p-2 rounded-md">Delete</button>
-      <button (click)="updateTodo(todo)" class="bg-blue-500 text-white p-2 rounded-md">Update</button>
+      <div class="flex justify-between gap-3">
+        <button (click)="deleteTodo(todo._id!)" class="bg-red-500 text-white p-2 rounded-md">Delete</button>
+        <button (click)="openUpdateModal(todo)" class="bg-blue-500 text-white p-2 rounded-md">Update</button>
+      </div>
     </li>
   </ul>
   <div *ngIf="todos.length === 0">Todo List is empty</div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <h3 class="text-lg font-bold mb-4">Update Todo</h3>
+    <form (ngSubmit)="updateTodo()">
+      <input [(ngModel)]="selectedTodo!.title" name="title" class="w-full p-2 mb-4 border rounded" required />
+      <textarea [(ngModel)]="selectedTodo!.description" name="description" class="w-full p-2 mb-4 border rounded"></textarea>
+      <div class="flex items-center mb-4">
+        <input type="checkbox" [(ngModel)]="selectedTodo!.completed" name="completed" id="completed" class="mr-2" />
+        <label for="completed">Completed</label>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" (click)="closeUpdateModal()" class="bg-gray-300 text-black p-2 rounded-md mr-2">Cancel</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">Update</button>
+      </div>
+    </form>
+  </div>
 </div>

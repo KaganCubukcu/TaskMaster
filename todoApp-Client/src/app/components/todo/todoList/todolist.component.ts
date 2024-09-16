@@ -3,17 +3,20 @@ import {CommonModule} from '@angular/common'
 import {Todo} from '@/app/interfaces/todo/Todo.interface'
 import {TodoService} from '@/app/services/todo/todo.service'
 import {Subject, takeUntil} from 'rxjs'
+import {FormsModule} from '@angular/forms'
 
 @Component({
   selector: 'app-todolist',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './todolist.component.html',
   styleUrls: ['./todolist.component.css']
 })
 export class TodolistComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>()
   todos: Todo[] = []
+  selectedTodo: Todo | null = null
+  isModalOpen = false
 
   constructor(private todoService: TodoService) {}
 
@@ -37,13 +40,32 @@ export class TodolistComponent implements OnInit, OnDestroy {
         this.todos = this.todos.filter(todo => todo._id !== id)
       })
   }
-  updateTodo(todo: Todo) {
-    this.todoService
-      .updateTodo(todo)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(() => {
-        this.todos = this.todos.filter(t => t._id !== todo._id)
-      })
+  openUpdateModal(todo: Todo) {
+    this.selectedTodo = {...todo}
+    this.isModalOpen = true
+  }
+  closeUpdateModal() {
+    this.isModalOpen = false
+    this.selectedTodo = null
+  }
+  updateTodo() {
+    if (this.selectedTodo && this.selectedTodo._id) {
+      this.todoService
+        .updateTodo(this.selectedTodo._id, this.selectedTodo)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          next: updatedTodo => {
+            const index = this.todos.findIndex(t => t._id === updatedTodo._id)
+            if (index !== -1) {
+              this.todos[index] = updatedTodo
+            }
+            this.closeUpdateModal()
+          },
+          error: error => {
+            console.error('Error updating todo:', error)
+          }
+        })
+    }
   }
   ngOnDestroy(): void {
     this.unsubscribe$.next()
