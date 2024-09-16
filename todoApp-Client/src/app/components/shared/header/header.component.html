@@ -14,7 +14,9 @@
       @if (isLoggedIn) {
       <img src="https://tools-api.webcrumbs.org/image-placeholder/40/40/avatar/1" class="w-[40px] h-[40px] rounded-full object-cover" alt="User Avatar" />
       } @else {
-      <button href="/login" class="w-[120px] h-[40px] bg-[#3498DB] text-white rounded-md">Get Started</button>
+      <button class="w-[120px] h-[40px] bg-[#3498DB] rounded-md">
+        <a href="/login" class="text-white">Get Started</a>
+      </button>
       }
     </div>
   </nav>
