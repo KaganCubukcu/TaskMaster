@@ -25,4 +25,8 @@ export class AuthService {
   register(email: string, password: string, name: string): Observable<Register> {
     return this.http.post<Register>(`${this.apiUrl}/register`, {email, password, name})
   }
+  logout() {
+    localStorage.removeItem('token')
+    this.isLoggedInSubject.next(false)
+  }
 }

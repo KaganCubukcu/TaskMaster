@@ -1,21 +1,24 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose'
+import {Document, Types} from 'mongoose'
 
-export type TodoDocument = Todo & Document;
+export type TodoDocument = Todo & Document
 
 @Schema()
 export class Todo {
-  @Prop({ required: true })
-  title: string;
+  @Prop({required: true})
+  title: string
 
   @Prop()
-  description: string;
+  description: string
 
-  @Prop({ default: false })
-  completed: boolean;
+  @Prop({default: false})
+  completed: boolean
 
-  @Prop()
-  dueDate: Date;
+  @Prop({type: Types.ObjectId, ref: 'User', required: true})
+  userId: Types.ObjectId
+
+  @Prop({default: Date.now})
+  dueDate: Date
 }
 
-export const TodoSchema = SchemaFactory.createForClass(Todo);
+export const TodoSchema = SchemaFactory.createForClass(Todo)
