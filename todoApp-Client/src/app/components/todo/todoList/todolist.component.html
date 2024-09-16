@@ -1,0 +1,11 @@
+<div class="flex justify-center items-center w-full mt-5">
+  <ul>
+    <li *ngFor="let todo of todos" class="flex justify-between items-center p-2 border-b border-gray-300">
+      <span [class.completed]="todo.completed">{{ todo.title }}</span>
+      <span>{{ todo.createdAt | date }}</span>
+      <button (click)="deleteTodo(todo._id!)" class="bg-red-500 text-white p-2 rounded-md">Delete</button>
+      <button (click)="updateTodo(todo)" class="bg-blue-500 text-white p-2 rounded-md">Update</button>
+    </li>
+  </ul>
+  <div *ngIf="todos.length === 0">Todo List is empty</div>
+</div>
