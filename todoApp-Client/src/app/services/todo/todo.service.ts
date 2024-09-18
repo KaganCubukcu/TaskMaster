@@ -2,7 +2,8 @@ import {environment} from '@/app/environment/environment'
 import {Todo} from '@/app/interfaces/todo/Todo.interface'
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core'
-import {Observable} from 'rxjs'
+import {Observable, throwError} from 'rxjs'
+import {catchError} from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +31,12 @@ export class TodoService {
     return this.http.post<Todo>(`${this.apiUrl}/todos`, todoWithUser, {headers: this.getHeaders()})
   }
 
-  updateTodo(id: string, todo: Partial<Todo>): Observable<Todo> {
-    return this.http.put<Todo>(`${this.apiUrl}/todos/${id}`, todo)
+  updateTodo(id: string, todo: Todo): Observable<Todo> {
+    return this.http.put<Todo>(`${this.apiUrl}/todos/${id}`, todo, {headers: this.getHeaders()}).pipe(
+      catchError((error: any) => {
+        return throwError(() => new Error('Todo is not updated'))
+      })
+    )
   }
 
   deleteTodo(id: string): Observable<void> {

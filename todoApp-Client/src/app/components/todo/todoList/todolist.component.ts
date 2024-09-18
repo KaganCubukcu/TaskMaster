@@ -42,6 +42,7 @@ export class TodolistComponent implements OnInit, OnDestroy {
         this.todos = todos
       })
   }
+
   deleteTodo(id: string) {
     this.todoService
       .deleteTodo(id)
@@ -50,14 +51,17 @@ export class TodolistComponent implements OnInit, OnDestroy {
         this.todos = this.todos.filter(todo => todo._id !== id)
       })
   }
+
   openUpdateModal(todo: Todo) {
     this.selectedTodo = {...todo}
     this.isModalOpen = true
   }
+
   closeUpdateModal() {
     this.isModalOpen = false
     this.selectedTodo = null
   }
+
   updateTodo() {
     if (this.selectedTodo && this.selectedTodo._id) {
       this.todoService
@@ -65,18 +69,23 @@ export class TodolistComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
           next: updatedTodo => {
-            const index = this.todos.findIndex(t => t._id === updatedTodo._id)
-            if (index !== -1) {
-              this.todos[index] = updatedTodo
+            if (updatedTodo && updatedTodo._id) {
+              const index = this.todos.findIndex(t => t._id === updatedTodo._id)
+              if (index !== -1) {
+                this.todos[index] = updatedTodo
+              }
             }
             this.closeUpdateModal()
           },
           error: error => {
-            console.error('Error updating todo:', error)
+            console.error('Todo is not updated:', error)
           }
         })
+    } else {
+      console.error('Todo is not updated:', this.selectedTodo)
     }
   }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next()
     this.unsubscribe$.complete()

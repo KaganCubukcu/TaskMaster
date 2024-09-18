@@ -31,8 +31,8 @@ export class TodoController {
 
   @UseGuards(JwtAuthGuard)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    return this.todoService.update(id, updateTodoDto)
+  async updateTodo(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
+    return this.todoService.updateTodo(id, updateTodoDto)
   }
 
   @UseGuards(JwtAuthGuard)
