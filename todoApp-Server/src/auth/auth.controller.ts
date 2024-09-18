@@ -13,7 +13,7 @@ export class AuthController {
     if (!user) {
       throw new UnauthorizedException()
     }
-    return this.authService.login(user)
+    return await this.authService.login(user)
   }
 
   @Post('register')

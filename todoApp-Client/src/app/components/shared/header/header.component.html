@@ -12,9 +12,16 @@
     </div>
     <div class="flex items-center space-x-4">
       @if (isLoggedIn) {
-      <img src="https://tools-api.webcrumbs.org/image-placeholder/40/40/avatar/1" class="w-[40px] h-[40px] rounded-full object-cover" alt="User Avatar" />
+      <div class="relative">
+        <img src="" (click)="toggleMenu()" class="w-[40px] h-[40px] rounded-full object-cover bg-blue-500 cursor-pointer" alt="User Avatar" />
+        <div *ngIf="isMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+          <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+        </div>
+      </div>
       } @else {
-      <button href="/login" class="w-[120px] h-[40px] bg-[#3498DB] text-white rounded-md">Get Started</button>
+      <button class="w-[120px] h-[40px] bg-[#3498DB] rounded-md">
+        <a href="/login" class="text-white">Get Started</a>
+      </button>
       }
     </div>
   </nav>

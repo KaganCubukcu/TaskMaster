@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { AuthModule } from '../auth/auth.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { TodoModule } from '../todo/todo.module';
-import { ProfileModule } from '../profile/profile.module';
+import {Module} from '@nestjs/common'
+import {AppController} from './app.controller'
+import {AppService} from './app.service'
+import {AuthModule} from '../auth/auth.module'
+import {MongooseModule} from '@nestjs/mongoose'
+import {TodoModule} from '../todo/todo.module'
+import {ProfileModule} from '../profile/profile.module'
+import {ConfigModule} from '@nestjs/config'
 
 @Module({
   imports: [
@@ -12,8 +13,11 @@ import { ProfileModule } from '../profile/profile.module';
     TodoModule,
     AuthModule,
     ProfileModule,
+    ConfigModule.forRoot({
+      isGlobal: true
+    })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}
