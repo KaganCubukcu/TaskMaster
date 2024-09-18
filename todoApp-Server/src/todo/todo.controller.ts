@@ -6,6 +6,7 @@ import {UpdateTodoDto} from './DTOs/update-todo.dto'
 import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard'
 
 @Controller('todos')
+@UseGuards(JwtAuthGuard)
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 

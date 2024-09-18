@@ -32,14 +32,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (res: Login) => {
-          localStorage.setItem('token', res.accessToken)
-          this.router.navigate(['/'])
+          if (res.token) {
+            localStorage.setItem('token', res.token)
+            this.router.navigate(['/'])
+          } else {
+            console.error('Token not found in response')
+          }
         },
         error: err => {
-          console.error(err)
+          console.error('Login error:', err)
         }
       })
   }
+
   ngOnDestroy() {
     this.unsubscribe$.next()
     this.unsubscribe$.complete()

@@ -1,6 +1,8 @@
-<div class="flex justify-center items-center w-full mt-5" *ngIf="isLoggedIn">
+<div class="flex flex-col justify-center items-center w-full mt-5">
+  @if (isLoggedIn) {
   <ul class="flex flex-wrap justify-center gap-4 w-full min-h-[200px] p-4">
-    <li *ngFor="let todo of todos" class="flex flex-col justify-between items-center p-2 border-b border-gray-300 gap-3">
+    @for (todo of todos; track todo._id) {
+    <li class="flex flex-col justify-between items-center p-2 border-b border-gray-300 gap-3">
       <span [class.completed]="todo.completed">{{ todo.title }}</span>
       <span>{{ todo.description }}</span>
       <span>{{ todo.createdAt | date }}</span>
@@ -9,12 +11,16 @@
         <button (click)="openUpdateModal(todo)" class="bg-blue-500 text-white p-2 rounded-md">Update</button>
       </div>
     </li>
+    } @empty {
+    <div class="flex justify-center items-center w-full h-full">Todo List is empty</div>
+    }
   </ul>
-  <div *ngIf="todos.length === 0">Todo List is empty</div>
+  }
 </div>
 
 <!-- Modal -->
-<div *ngIf="isModalOpen" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+@if (isModalOpen) {
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
   <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
     <h3 class="text-lg font-bold mb-4">Update Todo</h3>
     <form (ngSubmit)="updateTodo()">
@@ -31,3 +37,4 @@
     </form>
   </div>
 </div>
+}

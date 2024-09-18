@@ -1,6 +1,6 @@
 import {environment} from '@/app/environment/environment'
 import {Todo} from '@/app/interfaces/todo/Todo.interface'
-import {HttpClient} from '@angular/common/http'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {Injectable} from '@angular/core'
 import {Observable} from 'rxjs'
 
@@ -11,8 +11,13 @@ export class TodoService {
   private apiUrl = environment.apiUrl
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token')
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`)
+  }
+
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.apiUrl}/todos`)
+    return this.http.get<Todo[]>(`${this.apiUrl}/todos`, {headers: this.getHeaders()})
   }
 
   getTodo(id: string): Observable<Todo> {
@@ -20,7 +25,9 @@ export class TodoService {
   }
 
   createTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(`${this.apiUrl}/todos`, todo)
+    const userId = localStorage.getItem('userId')
+    const todoWithUser = {...todo, userId}
+    return this.http.post<Todo>(`${this.apiUrl}/todos`, todoWithUser, {headers: this.getHeaders()})
   }
 
   updateTodo(id: string, todo: Partial<Todo>): Observable<Todo> {

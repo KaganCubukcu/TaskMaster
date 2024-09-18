@@ -6,6 +6,7 @@ import {LoginResult} from './interfaces/login/LoginResult.interface'
 import {InjectModel} from '@nestjs/mongoose'
 import {Model} from 'mongoose'
 import {RegisterDto} from './DTOs/register.dto'
+import {Types} from 'mongoose'
 
 @Injectable()
 export class AuthService {
@@ -21,9 +22,11 @@ export class AuthService {
   }
 
   async login(user: Omit<User, 'password'>): Promise<LoginResult> {
-    const payload = {email: user.email, sub: user.id, userId: user.id}
+    const payload = {email: user.email, sub: user._id}
+    const userId = Types.ObjectId.isValid(user._id) ? (user._id as unknown as Types.ObjectId).toString() : user._id
     return {
-      token: this.jwtService.sign(payload)
+      token: this.jwtService.sign(payload),
+      userId
     }
   }
 
@@ -34,6 +37,10 @@ export class AuthService {
       password: hashedPassword
     })
     const savedUser = await createdUser.save()
-    return this.login(savedUser)
+    const userId = Types.ObjectId.isValid(savedUser._id) ? (savedUser._id as unknown as Types.ObjectId).toString() : savedUser._id
+    return {
+      token: this.jwtService.sign({email: savedUser.email, sub: savedUser._id}),
+      userId
+    }
   }
 }
