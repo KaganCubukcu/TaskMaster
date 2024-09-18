@@ -6,11 +6,12 @@ import {Subject, takeUntil} from 'rxjs'
 import {FormsModule} from '@angular/forms'
 import {AuthService} from '@/app/services/auth/auth.service'
 import {Router} from '@angular/router'
+import {TruncatePipe} from '@/app/helpers/truncate.pipe'
 
 @Component({
   selector: 'app-todolist',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TruncatePipe],
   templateUrl: './todolist.component.html',
   styleUrls: ['./todolist.component.css']
 })
