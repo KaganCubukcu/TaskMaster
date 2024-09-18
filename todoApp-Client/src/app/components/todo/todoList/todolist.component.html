@@ -2,9 +2,9 @@
   @if (isLoggedIn) {
   <ul class="flex flex-wrap justify-center gap-4 w-full min-h-[200px] p-4">
     @for (todo of todos; track todo._id) {
-    <li class="flex flex-col justify-between items-center p-2 border-b border-gray-300 gap-3">
+    <li class="flex flex-col justify-between items-center p-2 rounded-lg gap-3 bg-blue-200">
       <span [class.completed]="todo.completed">{{ todo.title }}</span>
-      <span>{{ todo.description }}</span>
+      <span class="text-sm">{{ todo.description | truncate : 20 }}</span>
       <span>{{ todo.createdAt | date }}</span>
       <div class="flex justify-between gap-3">
         <button (click)="deleteTodo(todo._id!)" class="bg-red-500 text-white p-2 rounded-md">Delete</button>
