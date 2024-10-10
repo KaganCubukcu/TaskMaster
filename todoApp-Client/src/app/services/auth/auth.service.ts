@@ -1,7 +1,7 @@
 import {environment} from '@/app/environment/environment'
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
-import {BehaviorSubject, Observable, tap} from 'rxjs'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {BehaviorSubject, catchError, Observable, tap, throwError} from 'rxjs'
 import {Login} from '@/app/interfaces/auth/Login.interface'
 import {Register} from '@/app/interfaces/auth/Register.interface'
 
@@ -14,8 +14,15 @@ export class AuthService {
   isLoggedIn$ = this.isLoggedInSubject.asObservable()
 
   constructor(private http: HttpClient) {
+    this.getAuthHeaders()
+    this.isLoggedInSubject.next(!!localStorage.getItem('token'))
+  }
+  getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token')
-    this.isLoggedInSubject.next(!!token)
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    })
   }
 
   login(email: string, password: string): Observable<Login> {
@@ -31,11 +38,17 @@ export class AuthService {
   }
 
   register(email: string, password: string, name: string): Observable<Register> {
-    return this.http.post<Register>(`${this.apiUrl}/register`, {email, password, name})
+    return this.http.post<Register>(`${this.apiUrl}/register`, {email, password, name}).pipe(
+      catchError(error => {
+        console.error('Kayıt işlemi sırasında bir hata oluştu:', error)
+        return throwError(() => new Error('Kayıt işlemi başarısız oldu. Lütfen daha sonra tekrar deneyin.'))
+      })
+    )
   }
 
   logout() {
     localStorage.removeItem('token')
+    localStorage.removeItem('userId')
     this.isLoggedInSubject.next(false)
   }
 }

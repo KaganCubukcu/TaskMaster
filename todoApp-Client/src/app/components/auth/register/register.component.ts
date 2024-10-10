@@ -23,11 +23,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   })
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.registerForm.valueChanges.subscribe(value => {
-      console.log(value)
-    })
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     if (this.registerForm.invalid) return

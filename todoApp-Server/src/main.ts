@@ -11,12 +11,15 @@ async function bootstrap() {
     origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    credentials: false
   })
+
   app.useGlobalPipes(new ValidationPipe())
   app.useGlobalFilters(new HttpExceptionFilter())
+
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
+
   const port = process.env.PORT || 3000
 
   await app.listen(port)

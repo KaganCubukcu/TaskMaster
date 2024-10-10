@@ -35,7 +35,6 @@ export class TodoFormComponent implements OnInit, OnDestroy {
         })
         .subscribe({
           next: newTodo => {
-            console.log('newTodo:', newTodo)
             this.newTodoTitle = ''
           },
           error: error => {

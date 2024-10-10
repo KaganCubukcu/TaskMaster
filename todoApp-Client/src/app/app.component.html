@@ -1,8 +1,10 @@
 <div class="flex flex-col min-h-screen">
   <app-header></app-header>
-  <main class="flex-grow container mx-auto px-4 py-8">
-    <app-todoform></app-todoform>
-    <router-outlet></router-outlet>
+  <main class="flex-grow mt-10">
+    <div class="w-[1200px] mx-auto">
+      <app-todoform></app-todoform>
+      <router-outlet></router-outlet>
+    </div>
   </main>
   <app-footer></app-footer>
 </div>
