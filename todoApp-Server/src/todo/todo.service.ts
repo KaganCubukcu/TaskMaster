@@ -10,15 +10,19 @@ export class TodoService {
   constructor(@InjectModel(Todo.name) private todoModel: Model<TodoDocument>) {}
 
   async findAll(userId: string, completed?: boolean, sort: string = 'dueDate'): Promise<Todo[]> {
-    let query = this.todoModel.find({userId})
+    const query = this.todoModel.find({userId})
     if (completed !== undefined) {
-      query = query.where('completed').equals(completed)
+      query.where('completed').equals(completed)
     }
-    return query.sort({[sort]: 1})
+    return query.sort({[sort]: 1}).exec()
   }
 
   async findOne(id: string): Promise<Todo> {
-    return this.todoModel.findById(id)
+    const todo = await this.todoModel.findById(id).exec()
+    if (!todo) {
+      throw new NotFoundException(`Todo with ID ${id} not found`)
+    }
+    return todo
   }
 
   async create(userId: string, createTodoDto: CreateTodoDto): Promise<Todo> {
@@ -26,8 +30,8 @@ export class TodoService {
     return newTodo.save()
   }
 
-  async updateTodo(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
-    const updatedTodo = await this.todoModel.findByIdAndUpdate(id, updateTodoDto, {new: true})
+  async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
+    const updatedTodo = await this.todoModel.findByIdAndUpdate(id, updateTodoDto, {new: true}).exec()
     if (!updatedTodo) {
       throw new NotFoundException(`Todo with ID ${id} not found`)
     }
@@ -35,6 +39,9 @@ export class TodoService {
   }
 
   async delete(id: string): Promise<void> {
-    await this.todoModel.findByIdAndDelete(id)
+    const result = await this.todoModel.findByIdAndDelete(id).exec()
+    if (!result) {
+      throw new NotFoundException(`Todo with ID ${id} not found`)
+    }
   }
 }

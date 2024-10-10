@@ -24,7 +24,7 @@ export class AuthController {
       if (error.code === 11000) {
         throw new BadRequestException('Email already exists')
       }
-      throw new InternalServerErrorException()
+      throw new InternalServerErrorException(`Registeration Failed: ${error.message}`)
     }
   }
 }

@@ -12,8 +12,7 @@ import {TruncatePipe} from '@/app/helpers/truncate.pipe'
   selector: 'app-todolist',
   standalone: true,
   imports: [CommonModule, FormsModule, TruncatePipe],
-  templateUrl: './todolist.component.html',
-  styleUrls: ['./todolist.component.css']
+  templateUrl: './todolist.component.html'
 })
 export class TodolistComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject<void>()

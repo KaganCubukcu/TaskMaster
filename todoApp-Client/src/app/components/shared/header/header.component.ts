@@ -8,8 +8,7 @@ import {Router} from '@angular/router'
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject<void>()
