@@ -34,3 +34,8 @@ Thumbs.db
 
 .angular
 .env
+
+# Cursor
+.cursorignore
+.cursorrules
+instructions.txt
